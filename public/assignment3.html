@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>A WebGL Mini CAD</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        canvas {
+            border: 1px solid gray;
+        }
+    </style>
+    <script src="assignment3.js"></script>
+
+</head>
+
+<body onload="init();render()">
+    <div class="container">
+        <h1>A WebGL Mini CAD</h1>
+        <canvas id="canvas" width="500px" height="300px"></canvas><br />
+
+        X: <input id="x" value="20">
+        Width: <input id="width" value="20"><br />
+        Y: <input id="y" value="20">
+        Height: <input id="height" value="20"><br />
+        Color: <input id="color" type="color"><br />
+        <label>
+            <input type="radio" name="shape" checked value="RECTANGLE" />
+            Rectangle
+        </label>
+
+        <label>
+            <input type="radio" name="shape" checked value="TRIANGLE" />
+            Triangle
+        </label>
+    </div>
+
+    <script id="vertex-shader-2d" type="x-shader/x-vertex">
+    attribute vec2 a_coords;
+    uniform vec2 u_resolution;
+
+    void main() {
+        vec2 zeroToOne = a_coords / u_resolution;
+        vec2 zeroToTwo = zeroToOne * 2.0;
+        vec2 minusOneToOne = zeroToTwo - 1.0;
+        vec2 clipSpace = minusOneToOne * vec2(1, -1);
+        gl_Position = vec4(clipSpace, 0, 1);
+    }
+</script>
+
+    <script id="fragment-shader-2d" type="x-shader/x-fragment">
+    precision mediump float;
+    uniform vec4 u_color;
+    void main() {
+        gl_FragColor = u_color;
+    }
+</script>
+
+</body>
+
+</html>
