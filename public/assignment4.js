@@ -7,6 +7,7 @@ const BLUE_RGB = webglUtils.hexToRgb(BLUE_HEX)
 const RECTANGLE = "RECTANGLE"
 const TRIANGLE = "TRIANGLE"
 const CIRCLE = "CIRCLE"
+const STAR = "STAR"
 const origin = { x: 0, y: 0 }
 const sizeOne = { width: 1, height: 1 }
 let shapes = [
@@ -120,6 +121,8 @@ const render = () => {
             renderTriangle(shape)
         } else if (shape.type === CIRCLE) {
             renderCircle(shape)
+        } else if (shape.type === STAR) {
+            renderStar(shape)
         }
     })
 
@@ -199,23 +202,44 @@ const renderTriangle = (triangle) => {
 }
 
 const renderCircle = (circle) => {
-    let array = []
+    var array = new Float32Array(600)
     const rad = circle.dimensions.width / 2
     const x = circle.position.x
     const y = circle.position.y
 
     for (i = 0; i < 100; i++) {
-        array.push(x + rad * Math.cos(Math.PI * 2 * i / 100))
-        array.push(y + rad * Math.sin(Math.PI * 2 * i / 100))
-        array.push(x + rad * Math.cos(Math.PI * 2 * i / 100 + 2 * Math.PI / 3))
-        array.push(y + rad * Math.sin(Math.PI * 2 * i / 100 + 2 * Math.PI / 3))
-        array.push(x + rad * Math.cos(Math.PI * 2 * i / 100 - 2 * Math.PI / 3))
-        array.push(y + rad * Math.sin(Math.PI * 2 * i / 100 - 2 * Math.PI / 3))
+        array[6 * i] = (Math.fround(x + rad * Math.cos(Math.PI * 2 * i / 100)))
+        array[6 * i + 1] = (Math.fround(y + rad * Math.sin(Math.PI * 2 * i / 100)))
+        array[6 * i + 2] = (Math.fround(x + rad * Math.cos(Math.PI * 2 * i / 100 + 2 * Math.PI / 3)))
+        array[6 * i + 3] = (Math.fround(y + rad * Math.sin(Math.PI * 2 * i / 100 + 2 * Math.PI / 3)))
+        array[6 * i + 4] = (Math.fround(x + rad * Math.cos(Math.PI * 2 * i / 100 - 2 * Math.PI / 3)))
+        array[6 * i + 5] = (Math.fround(y + rad * Math.sin(Math.PI * 2 * i / 100 - 2 * Math.PI / 3)))
     }
-    const float32Array = new Float32Array([array])
 
-    gl.bufferData(gl.ARRAY_BUFFER, float32Array, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
     gl.drawArrays(gl.TRIANGLES, 0, 300);
+}
+
+const renderStar = (star) => {
+    const x1 = star.position.x - star.dimensions.width / 2
+    const y1 = star.position.y + star.dimensions.height / 3
+    const x2 = star.position.x + star.dimensions.width / 2
+    const y2 = star.position.y + star.dimensions.height / 3
+    const x3 = star.position.x
+    const y3 = star.position.y - star.dimensions.height * 2 / 3
+    const x4 = star.position.x - star.dimensions.width / 2
+    const y4 = star.position.y - star.dimensions.height / 3
+    const x5 = star.position.x + star.dimensions.width / 2
+    const y5 = star.position.y - star.dimensions.height / 3
+    const x6 = star.position.x
+    const y6 = star.position.y + star.dimensions.height * 2 / 3
+
+    const float32Array = new Float32Array([
+        x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6
+    ])
+
+    gl.bufferData(gl.ARRAY_BUFFER, float32Array, gl.STATIC_DRAW)
+    gl.drawArrays(gl.TRIANGLES, 0, 6)
 }
 
 const addShape = (translation, type) => {
