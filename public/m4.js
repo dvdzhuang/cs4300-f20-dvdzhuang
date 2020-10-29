@@ -13,11 +13,11 @@ const m4 = {
   },
 
   projection: (width, height, depth) => [
-      2 / width, 0, 0, 0,
-      0, -2 / height, 0, 0,
-      0, 0, 2 / depth, 0,
-      -1, 1, 0, 1,
-    ],
+    2 / width, 0, 0, 0,
+    0, -2 / height, 0, 0,
+    0, 0, 2 / depth, 0,
+    -1, 1, 0, 1,
+  ],
 
   multiply: (a, b) => {
     const a00 = a[0 * 4 + 0];
@@ -73,11 +73,11 @@ const m4 = {
   },
 
   translation: (tx, ty, tz) => [
-      1,  0,  0,  0,
-      0,  1,  0,  0,
-      0,  0,  1,  0,
-      tx, ty, tz, 1,
-    ],
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    tx, ty, tz, 1,
+  ],
 
   xRotation: (angleInRadians) => {
     const c = Math.cos(angleInRadians);
@@ -116,11 +116,11 @@ const m4 = {
   },
 
   scaling: (sx, sy, sz) => [
-      sx, 0,  0,  0,
-      0, sy,  0,  0,
-      0,  0, sz,  0,
-      0,  0,  0,  1,
-    ],
+    sx, 0, 0, 0,
+    0, sy, 0, 0,
+    0, 0, sz, 0,
+    0, 0, 0, 1,
+  ],
 
   translate: (m, tx, ty, tz) => m4.multiply(m, m4.translation(tx, ty, tz)),
 
@@ -149,16 +149,16 @@ const m4 = {
     const m31 = m[3 * 4 + 1];
     const m32 = m[3 * 4 + 2];
     const m33 = m[3 * 4 + 3];
-    const tmp_0  = m22 * m33;
-    const tmp_1  = m32 * m23;
-    const tmp_2  = m12 * m33;
-    const tmp_3  = m32 * m13;
-    const tmp_4  = m12 * m23;
-    const tmp_5  = m22 * m13;
-    const tmp_6  = m02 * m33;
-    const tmp_7  = m32 * m03;
-    const tmp_8  = m02 * m23;
-    const tmp_9  = m22 * m03;
+    const tmp_0 = m22 * m33;
+    const tmp_1 = m32 * m23;
+    const tmp_2 = m12 * m33;
+    const tmp_3 = m32 * m13;
+    const tmp_4 = m12 * m23;
+    const tmp_5 = m22 * m13;
+    const tmp_6 = m02 * m33;
+    const tmp_7 = m32 * m03;
+    const tmp_8 = m02 * m23;
+    const tmp_9 = m22 * m03;
     const tmp_10 = m02 * m13;
     const tmp_11 = m12 * m03;
     const tmp_12 = m20 * m31;
@@ -261,8 +261,8 @@ const m4 = {
 
   cross: (a, b) => {
     return [a[1] * b[2] - a[2] * b[1],
-      a[2] * b[0] - a[0] * b[2],
-      a[0] * b[1] - a[1] * b[0]];
+    a[2] * b[0] - a[0] * b[2],
+    a[0] * b[1] - a[1] * b[0]];
   },
 
   subtractVectors: (a, b) => {
@@ -270,9 +270,45 @@ const m4 = {
   },
 
   identity: () => [
-    1,  0,  0,  0,
-    0,  1,  0,  0,
-    0,  0,  1,  0,
-    0,  0,  0,  1,
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1,
   ],
+
+  transpose: (m) => {
+    const m00 = m[0 * 4 + 0];
+    const m01 = m[0 * 4 + 1];
+    const m02 = m[0 * 4 + 2];
+    const m03 = m[0 * 4 + 3];
+    const m10 = m[1 * 4 + 0];
+    const m11 = m[1 * 4 + 1];
+    const m12 = m[1 * 4 + 2];
+    const m13 = m[1 * 4 + 3];
+    const m20 = m[2 * 4 + 0];
+    const m21 = m[2 * 4 + 1];
+    const m22 = m[2 * 4 + 2];
+    const m23 = m[2 * 4 + 3];
+    const m30 = m[3 * 4 + 0];
+    const m31 = m[3 * 4 + 1];
+    const m32 = m[3 * 4 + 2];
+    const m33 = m[3 * 4 + 3];
+
+    return [m00,
+      m10,
+      m20,
+      m30,
+      m01,
+      m11,
+      m21,
+      m31,
+      m02,
+      m12,
+      m22,
+      m32,
+      m03,
+      m13,
+      m23,
+      m33]
+  },
 };

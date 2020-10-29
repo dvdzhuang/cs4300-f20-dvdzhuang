@@ -93,6 +93,10 @@ const webglUtils = {
         target[index] = event.target.value
         render();
     },
+    updateLightDirection: (event, index) => {
+        lightSource[index] = parseFloat(event.target.value)
+        render()
+    },
     addShape: (newShape, type) => {
         const colorHex = document.getElementById("color").value
         const colorRgb = webglUtils.hexToRgb(colorHex)
@@ -168,6 +172,18 @@ const webglUtils = {
         ]
         const float32Array = new Float32Array(geometry)
         gl.bufferData(gl.ARRAY_BUFFER, float32Array, gl.STATIC_DRAW)
+
+        var normals = new Float32Array([
+            0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+            0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1,
+            0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0,
+            0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0,
+            -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0,
+            1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,
+        ]);
+        gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, normals, gl.STATIC_DRAW);
+
         var primitiveType = gl.TRIANGLES;
         gl.drawArrays(gl.TRIANGLES, 0, 6 * 6);
     },
