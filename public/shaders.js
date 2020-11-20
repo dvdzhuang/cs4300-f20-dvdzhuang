@@ -23,9 +23,10 @@ const loadShader = (gl, type, source) => {
 
 const getProgramParameters = (gl, shaderProgram) => {
     return {
-        program: shaderProgram, 
+        program: shaderProgram,
         attribLocations: {
             vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+            vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'),
         },
         uniformLocations: {
             projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
