@@ -7,6 +7,7 @@
     <script src="buffers.js"></script>
     <script src="gl-matrix.js"></script>
     <script src="render.js"></script>
+    <script src="textures.js"></script>
     <title>Title</title>
 </head>
 
@@ -16,22 +17,25 @@
 
     <script id="vertex-shader" type="x-shader/x-vertex">
         attribute vec4 aVertexPosition;
-        attribute vec4 aVertexColor;
+        attribute vec2 aTextureCoord;
         
         uniform mat4 uModelViewMatrix;
         uniform mat4 uProjectionMatrix;
 
-        varying lowp vec4 vColor;
+        varying highp vec2 vTextureCoord;
 
         void main() {
             gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-            vColor = aVertexColor;
+            vTextureCoord = aTextureCoord;
         }
     </script>
     <script id="fragment-shader" type="x-shader/x-vertex">
-        varying lowp vec4 vColor;
+        varying highp vec2 vTextureCoord;
+
+        uniform sampler2D uSampler;
+
         void main() {
-            gl_FragColor = vColor;
+            gl_FragColor = texture2D(uSampler, vTextureCoord);
         }
     </script>
 </body>
